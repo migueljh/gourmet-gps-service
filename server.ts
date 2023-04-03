@@ -26,7 +26,7 @@ app.get("/api/restaurants", async (req: Request, res: Response) => {
         latitude,
         longitude,
         limit: 10,
-        sort_by: "best_match",
+        sort_by: "rating",
       },
     });
     res.json(response.data);
