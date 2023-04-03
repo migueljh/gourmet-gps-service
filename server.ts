@@ -26,10 +26,18 @@ app.get("/api/restaurants", async (req: Request, res: Response) => {
         latitude,
         longitude,
         limit: 10,
-        sort_by: "rating",
+        sort_by: "best_match",
       },
     });
-    res.json(response.data);
+
+    /* I am sorting the restaurants in this way because although Yelp has already integrated the
+     sort_by: 'rating' parameter, this parameter is not working as I expect and I get
+    the same restaurants in different addresses even if they are far away from each other. */
+    const sortedBusinesses = response.data.businesses.sort(
+      (a: any, b: any) => b.rating - a.rating
+    );
+
+    res.json({ ...response.data, businesses: sortedBusinesses });
   } catch (error: unknown) {
     console.log(error);
     if (error instanceof Error) {
